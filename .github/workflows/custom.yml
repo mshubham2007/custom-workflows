@@ -4,9 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Target environment (e.g., dev or test)"
+        description: "Target environment"
         required: true
         default: "dev" # Default to dev if no input is provided
+        type: choice
+        options:
+          - dev
+          - test
+          - stage
+          - prod
 
 jobs:
   deploy:
