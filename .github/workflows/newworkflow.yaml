@@ -1,0 +1,30 @@
+name: Infrastructure
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: 'Environment'
+                required: true
+                default: 'dev'
+
+jobs:
+    post-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Install JAVA
+              uses: actions/setup-java@v4
+              with:
+                distribution: 'oracle'
+                java-version: '21'
+
+            - name: Run java code
+              env:
+                REM_ENV_ALIAS: "rem/${{ github.event.inputs.environment }}/dev"
+                CONFIG_DIR: "configuration/${{ github.event.inputs.environment }}"
+                LOAD_SECRET: "false"
+              run: |
+                curl -o newfile.jar "https://artifactory.net:443/artifactory/libs/newfile.jar"
+                java -jar newfile.jar

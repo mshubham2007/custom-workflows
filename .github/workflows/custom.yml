@@ -1,0 +1,22 @@
+name: Dynamic Environment Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment (e.g., dev or test)"
+        required: true
+        default: "dev" # Default to dev if no input is provided
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }} # Dynamically set the environment
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Deployment Steps
+        run: |
+          echo "Deploying to environment: ${{ github.event.inputs.environment }}"
+          # Add your deployment steps here
