@@ -1,0 +1,51 @@
+name: DB TESTING
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - stage
+          - prod
+      commands:
+        description: "DB Commands to run"
+        required: true
+        default: None
+        type: choice
+        options:
+          - DROP_ALL
+          - INSTALL_USER
+          - UPGRADE_USER
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Run the script
+        run: |
+          # Store input value in a variable
+          COMMAND="${{ github.event.inputs.commands }}"
+          
+          if [[ "$COMMAND" == "DROP_ALL" ]]; then
+            echo "Executing the drop-all Liquibase command..."
+            # Add the actual drop-all command here
+          
+          elif [[ "$COMMAND" == "INSTALL_USER" ]]; then
+            echo "Executing the install-user Liquibase command..."
+            # Add the actual install-user command here
+
+          elif [[ "$COMMAND" == "UPGRADE_USER" ]]; then
+            echo "Executing the upgrade-user Liquibase command..."
+            # Add the actual upgrade-user command here
+            
+          else
+            echo "No valid command selected, skipping execution."
+          fi
+        shell: bash
