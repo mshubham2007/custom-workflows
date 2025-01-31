@@ -49,3 +49,31 @@ jobs:
             echo "No valid command selected, skipping execution."
           fi
         shell: bash
+
+  build:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Run the script
+        run: |
+          # Store input value in a variable
+          COMMAND="${{ github.event.inputs.commands }}"
+          
+          if [[ "$COMMAND" == "DROP_ALL" ]]; then
+            echo "Executing the drop-all Liquibase command..."
+            # Add actual DROP_ALL command here
+          
+          else
+            echo "Executing other Liquibase commands..."
+            
+            if [[ "$COMMAND" == "INSTALL_USER" ]]; then
+              echo "Executing the install-user Liquibase command..."
+              # Add actual INSTALL_USER command here
+            fi
+            
+            if [[ "$COMMAND" == "UPGRADE_USER" ]]; then
+              echo "Executing the upgrade-user Liquibase command..."
+              # Add actual UPGRADE_USER command here
+            fi
+          fi
+        shell: bash        
